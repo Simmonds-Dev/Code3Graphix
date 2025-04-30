@@ -1,3 +1,6 @@
+// Explore having state management on login form to also have new users sign up
+// Be sure to reference all fields in User.js model
+
 import React from 'react';
 
 const Login = () => {
