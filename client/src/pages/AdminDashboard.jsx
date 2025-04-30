@@ -13,9 +13,9 @@ const AdminDashboard = () => {
                 // Assuming token is stored in localStorage
                 const token = localStorage.getItem('token');
 
-                const ordersResponse = await axios.get('/api/orders', {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
+                // const ordersResponse = await axios.get('/api/orders', {
+                //     headers: { Authorization: `Bearer ${token}` }
+                // });
 
                 const productsResponse = await axios.get('/api/products', {
                     headers: { Authorization: `Bearer ${token}` }
