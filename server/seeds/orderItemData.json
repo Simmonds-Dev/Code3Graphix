@@ -1,0 +1,16 @@
+[
+    {
+        "order_id": 1,
+        "product_id": 1,
+        "quantity": 2,
+        "unit_price": 25.99,
+        "size": "large"
+    },
+    {
+        "order_id": 1,
+        "product_id": 3,
+        "quantity": 1,
+        "unit_price": 9.99,
+        "size": "small"
+    }
+]

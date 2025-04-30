@@ -1,0 +1,14 @@
+[
+    {
+        "user_name": "admin",
+        "user_email": "admin@code3graphix.com",
+        "user_password": "test",
+        "user_role": "admin"
+    },
+    {
+        "user_name": "chris",
+        "user_email": "chris@email.com",
+        "user_password": "test",
+        "user_role": "user"
+    }
+]
