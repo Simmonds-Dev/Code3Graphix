@@ -1,10 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import Home from './pages/Home';
-import Products from './pages/Products';
-import Contact from './pages/Contact';
-import Login from './pages/Login';
+import Navbar from './components/Navbar.jsx';
+import Home from './pages/Home.jsx';
+import Products from './pages/Products.jsx';
+import Contact from './pages/Contact.jsx';
+import Login from './pages/Login.jsx';
 
 const App = () => {
   return (

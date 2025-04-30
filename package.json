@@ -20,6 +20,7 @@
         "jsonwebtoken": "^9.0.2",
         "mysql2": "^3.14.1",
         "nodemon": "^3.1.10",
+        "path-to-regexp": "^8.2.0",
         "react": "^19.1.0",
         "react-dom": "^19.1.0",
         "react-router-dom": "^7.5.3",
