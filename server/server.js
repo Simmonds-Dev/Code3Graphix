@@ -30,15 +30,12 @@ const corsOptions = {
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
 };
-app.use(cors(corsOptions));
 
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, '..', 'client', 'dist')));
-app.get(/.*/, (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'client', 'dist', 'index.html'));
-});
+app.use(cors(corsOptions));
+
 
 app.use('/', (req, res, next) => {
     console.log('Requested route:', req.path);
@@ -67,6 +64,12 @@ app.use('/api/products', productRoutes);
 // app.use('/api/categories', categoryRoutes);
 // app.use('/api/tags', tagRoutes);
 // app.use('/api/orders', orderRoutes);
+
+app.use(express.static(path.join(__dirname, '..', 'client', 'dist')));
+app.get(/.*/, (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'client', 'dist', 'index.html'));
+});
+
 
 // Start server
 sequelize.sync({ force: false }).then(() => {

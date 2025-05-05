@@ -1,16 +1,69 @@
 /* src/styles/main.css */
+svg {
+  display: block;
+  margin: 0 auto;
+  filter: drop-shadow(0 0 10px red) drop-shadow(0 0 20px red);
+}
+
+svg path {
+  fill: transparent;
+  stroke: red;
+  stroke-width: 0.8;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation:
+    textAnimation 5s ease-in-out forwards,
+    neonGlow 4s infinite alternate,
+    flicker 1.5s infinite steps(2, end);
+  filter: blur(0.3px) drop-shadow(0 0 6px red) drop-shadow(0 0 8px red);
+}
+
+/* Stroke draw and fill */
+@keyframes textAnimation {
+  0% {
+    stroke-dashoffset: 100;
+    fill: transparent;
+  }
+  70% {
+    fill: rgba(255, 0, 0, 0.555);
+  }
+  100% {
+    stroke-dashoffset: 0;
+    fill: red;
+  }
+}
+
+/* Flicker: subtle but random-looking light fluctuations */
+@keyframes flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    opacity: 1;
+  }
+  20%, 22%, 24%, 55% {
+    opacity: 0.85;
+  }
+}
+
+@keyframes neonGlow {
+  0% {
+    filter: blur(0.1px) drop-shadow(0 0 1px red) drop-shadow(0 0 2px red);
+  }
+  100% {
+    filter: blur(0.5px) drop-shadow(0 0 2px red) drop-shadow(0 0 5px red);
+  }
+}
+
 
 /* General styles */
 body {
   font-family: Arial, sans-serif;
-  background-color: #E0FBFC;
-  color: #404E4D;
+  background-color: #577590;
+  color: #FDFFFC;
   margin: 0;
   padding: 0;
 }
 
 .navbar {
-  background-color: #1F2041;
+  background-color: #011627;
   padding: 1rem;
   text-align: center;
 }
@@ -26,13 +79,13 @@ body {
 }
 
 .navbar a {
-  color: #C3423F;
-  color: white;
+  color: #FDFFFC;
   text-decoration: none;
 }
 
 .navbar a:hover {
   text-decoration: underline;
+  color: red;
 }
 
 .page {
@@ -40,9 +93,56 @@ body {
 }
 
 h1 {
-  color: #C3423F;
+  color: #FDFFFC;
 }
 
 .content {
   padding: 2rem;
+}
+
+
+.hero {
+  background: url('hero-image.jpg') no-repeat center center/cover;
+  color: white;
+  padding: 100px 20px;
+  text-align: center;
+}
+
+.previous-work, .about-us, footer {
+  padding: 50px 20px;
+}
+
+.project-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.project-card {
+  background: white;
+  padding: 20px;
+  border-radius: 5px;
+  width: calc(33.333% - 20px);
+}
+
+footer form {
+  display: flex;
+  flex-direction: column;
+}
+
+footer input, footer textarea {
+  padding: 10px;
+  margin: 10px 0;
+}
+
+footer button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+footer button:hover {
+  background-color: #0056b3;
 }
