@@ -6,7 +6,7 @@ const router = express.Router();
 // ===============================
 // GET all products
 // ===============================
-router.get('/products', async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         const products = await Product.findAll({
             include: [Category, Tag],
@@ -20,7 +20,7 @@ router.get('/products', async (req, res) => {
 // ===============================
 // GET single product by ID
 // ===============================
-router.get('/products/:id', async (req, res) => {
+router.get('/:id', async (req, res) => {
     try {
         const product = await Product.findByPk(req.params.id, {
             include: [Category, Tag],
@@ -39,7 +39,7 @@ router.get('/products/:id', async (req, res) => {
 // ===============================
 // CREATE a new product
 // ===============================
-router.post('/products', async (req, res) => {
+router.post('/', async (req, res) => {
     try {
         const product = await Product.create(req.body);
 
@@ -61,7 +61,7 @@ router.post('/products', async (req, res) => {
 // ===============================
 // UPDATE an existing product
 // ===============================
-router.put('/products/:id', async (req, res) => {
+router.put('/:id', async (req, res) => {
     try {
         const [affectedRows] = await Product.update(req.body, {
             where: { id: req.params.id },
@@ -97,7 +97,7 @@ router.put('/products/:id', async (req, res) => {
 // ===============================
 // DELETE a product
 // ===============================
-router.delete('/products/:id', async (req, res) => {
+router.delete('/:id', async (req, res) => {
     try {
         const deleted = await Product.destroy({
             where: { id: req.params.id },
