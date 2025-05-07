@@ -14,19 +14,21 @@ const Products = () => {
     }, []);
 
     return (
-        <div className="products">
+        <>
             <h1>Featured Products</h1>
-            <div className="product-grid">
-                {products.map((product) => (
-                    <div key={product.id} className="product-card">
-                        <h2>{product.product_name}</h2>
-                        <p>Category: {product.category?.category_name}</p>
-                        <p>Price: ${product.product_price}</p>
-                        <p>Tags: {product.tags?.map(tag => tag.tag_name).join(', ')}</p>
-                    </div>
-                ))}
+            <div className="products">
+                <div className="product-grid">
+                    {products.map((product) => (
+                        <div key={product.id} className="product-card">
+                            <h2>{product.product_name}</h2>
+                            <p>Category: {product.category?.category_name}</p>
+                            <p>Price: ${product.product_price}</p>
+                            <p>Tags: {product.tags?.map(tag => tag.tag_name).join(', ')}</p>
+                        </div>
+                    ))}
+                </div>
             </div>
-        </div>
+        </>
     );
 };
 
