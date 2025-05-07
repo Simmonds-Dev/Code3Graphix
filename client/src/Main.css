@@ -2,31 +2,29 @@
 svg {
   display: block;
   margin: 0 auto;
-  filter: drop-shadow(0 0 10px red) drop-shadow(0 0 20px red);
+  filter: drop-shadow(0 0 8px red) drop-shadow(0 0 12px red);
 }
 
 svg path {
   fill: transparent;
   stroke: red;
   stroke-width: 0.8;
-  stroke-dasharray: 100;
-  stroke-dashoffset: 100;
+  stroke-dasharray: 50;
+  stroke-dashoffset: 50;
   animation:
     textAnimation 5s ease-in-out forwards,
     neonGlow 4s infinite alternate,
     flicker 1.5s infinite steps(2, end);
-  filter: blur(0.3px) drop-shadow(0 0 6px red) drop-shadow(0 0 8px red);
+  filter: blur(0.3px) drop-shadow(0 0 2px red) drop-shadow(0 0 6px red);
 }
 
 /* Stroke draw and fill */
 @keyframes textAnimation {
   0% {
-    stroke-dashoffset: 100;
+    stroke-dashoffset: 50;
     fill: transparent;
   }
-  70% {
-    fill: rgba(255, 0, 0, 0.555);
-  }
+
   100% {
     stroke-dashoffset: 0;
     fill: red;
@@ -35,10 +33,22 @@ svg path {
 
 /* Flicker: subtle but random-looking light fluctuations */
 @keyframes flicker {
-  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+
+  0%,
+  19%,
+  21%,
+  23%,
+  25%,
+  54%,
+  56%,
+  100% {
     opacity: 1;
   }
-  20%, 22%, 24%, 55% {
+
+  20%,
+  22%,
+  24%,
+  55% {
     opacity: 0.85;
   }
 }
@@ -47,8 +57,9 @@ svg path {
   0% {
     filter: blur(0.1px) drop-shadow(0 0 1px red) drop-shadow(0 0 2px red);
   }
+
   100% {
-    filter: blur(0.5px) drop-shadow(0 0 2px red) drop-shadow(0 0 5px red);
+    filter: blur(0.5px) drop-shadow(0 0 2px red) drop-shadow(0 0 2px red);
   }
 }
 
@@ -100,6 +111,11 @@ h1 {
   padding: 2rem;
 }
 
+.home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
 .hero {
   background: url('hero-image.jpg') no-repeat center center/cover;
@@ -108,7 +124,9 @@ h1 {
   text-align: center;
 }
 
-.previous-work, .about-us, footer {
+.previous-work,
+.about-us,
+footer {
   padding: 50px 20px;
 }
 
@@ -125,24 +143,47 @@ h1 {
   width: calc(33.333% - 20px);
 }
 
+.contact-form {
+  background-color: #011627;
+  border-radius: 10px;
+  width: 60%;
+}
+
 footer form {
   display: flex;
   flex-direction: column;
 }
 
-footer input, footer textarea {
+footer input,
+footer textarea {
   padding: 10px;
   margin: 10px 0;
 }
 
 footer button {
-  background-color: #007bff;
+  background-color: #577590;
   color: white;
   padding: 10px;
   border: none;
   cursor: pointer;
+  border-radius: 10px;
 }
 
 footer button:hover {
-  background-color: #0056b3;
+  background-color: #3a4f61;
+}
+
+.products {
+  display: flex;
+  justify-content: center;
+}
+
+.product-card {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  background-color: #011627;
+  border-radius: 10px;
+  margin: 15px;
+  padding: 2rem;
 }
