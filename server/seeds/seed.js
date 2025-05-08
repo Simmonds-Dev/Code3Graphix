@@ -1,5 +1,5 @@
 import sequelize from '../config/connection.js';
-import { Product, User, Category, Tag, ProductTag, Order, OrderItem } from '../models/index.js';
+import { Product, User, Category, Tag, ProductTag, Orders, OrderItem } from '../models/index.js';
 import { readFile } from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -30,7 +30,7 @@ const seedAll = async () => {
     await Product.bulkCreate(productData);
     await Tag.bulkCreate(tagData);
     await ProductTag.bulkCreate(productTagData);
-    await Order.bulkCreate(orderData);
+    await Orders.bulkCreate(orderData);
     await OrderItem.bulkCreate(orderItemData);
 
     console.log('🌱 Database seeded successfully!');
