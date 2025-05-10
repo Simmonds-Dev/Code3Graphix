@@ -81,17 +81,6 @@ const Products = () => {
                                 <p>Price: ${product.product_price}</p>
                                 <p>Tags: {product.tags?.map(tag => tag.tag_name).join(', ')}</p>
 
-                                <div className="form-group">
-                                    <label>Quantity:</label>
-                                    <input
-                                        type="number"
-                                        min="1"
-                                        value={selection.quantity || 1}
-                                        onChange={(e) =>
-                                            handleChange(product.id, 'quantity', Number(e.target.value))
-                                        }
-                                    />
-                                </div>
 
                                 <div className="form-group">
                                     <label>Color:</label>

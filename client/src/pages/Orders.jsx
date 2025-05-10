@@ -1,9 +1,11 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import beverageHolderImg from "../assets/beverage_holder.png";
 
 const Orders = () => {
     const { state } = useLocation();
+    const [products, setProducts = setProductSelections] = useState({});
+    const navigate = useNavigate();
     const selectedProduct = state?.product;
 
     const [formData, setFormData] = useState({
@@ -38,65 +40,83 @@ const Orders = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         console.log('Order submitted:', formData);
-        // Post to /api/orders here
+        try {
+            const response = await fetch('http://localhost:3001/api/orders', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to submit order');
+            }
+
+            const data = await response.json();
+            console.log('Order created successfully:', data);
+            // Optionally, reset the form or redirect the user here
+        } catch (error) {
+            console.error('Error submitting order:', error);
+        }
     };
 
     return (
         <form onSubmit={handleSubmit} className="orderForm">
-            <h2>Start your order here!</h2>
+            <h2>Based off your selection, we've auto-filled some information about your request.</h2>
 
             <div className="form-columns">
 
-                <div className="left-column">
+                <div className="top-portion">
                     <div className="form-group">
-                        <div className="image-container">
-                            <img src={beverageHolderImg} alt="Order Example Image" />
-                        </div>
-                        <label htmlFor="partNumber">
-                            Part Number:
-                            <input id="part_number" type="text" name="partNumber" value={formData.partNumber} onChange={handleChange} required disabled />
-                        </label>
-                        <div className="form-group">
-                            <label htmlFor="description">
-                                Description:
-                                <input id="description" type="text" name="description" value={formData.description} onChange={handleChange} required disabled />
-                            </label>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="size">
-                                Size:
-                                <input type="text" name="size" value={formData.size} onChange={handleChange} required />
-                            </label>
-                        </div>
+                        <aside className="image-container">
+                            <div>
+                                <img src={beverageHolderImg} alt="Order Example Image" />
+                            </div>
+                            <div className='partAndDescription'>
+                                <div className="form-group">
+                                    <label htmlFor="partNumber">
+                                        Part Number:
+                                        <input id="part_number" type="text" name="partNumber" value={formData.partNumber} onChange={handleChange} required disabled />
+                                    </label>
+                                    <label htmlFor="description">
+                                        Description:
+                                        <input id="description" type="text" name="description" value={formData.description} onChange={handleChange} required disabled />
+                                    </label>
+                                    <label htmlFor="size">
+                                        Size:
+                                        <input id="size" type="text" name="size" value={formData.size} onChange={handleChange} required disabled />
+                                    </label>
+                                </div>
+                            </div>
+                        </aside>
                     </div>
 
                 </div>
 
-                <div className="right-column">
+                <div className="bottom-portion">
                     <div className="form-group">
-                        <div className="form-group">
-                            <label id="message" htmlFor="message">
-                                Please tell us a bit more about your concept. We hope to collaborate with you and respond via email with some design concepts before we come to an agreement:
+                        <label id="message" htmlFor="message">
+                            Please tell us a bit more about your concept. We hope to collaborate with you and we will get back to you A.S.A.P. That way, if there are any additional questions we will have an open line of communication. If you've logged in, your email should be auto-filled below.
+                        </label>
+                        <textarea name="message" value={formData.message} onChange={handleChange} required>Type here...</textarea>
+                        <div className='form-group'>
+                            <label id="quantity" htmlFor="quantity">
+                                How many were you looking to have done?:
+                                <input type="number" name="quantity" value={formData.quantity} onChange={handleChange} required />
                             </label>
-                                <textarea name="message" value={formData.message} onChange={handleChange} required />
+                            <label htmlFor="personalArtwork">
+                                Including Personal Artwork?
+                                <input type="checkbox" name="personalArtwork" checked={formData.personalArtwork} onChange={handleChange} />
+                            </label>
+                            <label htmlFor="file">
+                                Upload File:
+                                <input type="file" name="file" onChange={handleChange} />
+                            </label>
                         </div>
-                        <label htmlFor="quantity">
-                            How many were you looking to have done?:
-                            <input type="number" name="quantity" value={formData.quantity} onChange={handleChange} required />
-                        </label>
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="personalArtwork">
-                            Including Personal Artwork?
-                            <input type="checkbox" name="personalArtwork" checked={formData.personalArtwork} onChange={handleChange} />
-                        </label>
-                        <label htmlFor="file">
-                            Upload File:
-                            <input type="file" name="file" onChange={handleChange} />
-                        </label>
                     </div>
 
                     <div className="form-group">
