@@ -40,11 +40,9 @@ router.post('/', async (req, res) => {
             description,
             quantity,
             size,
-            personalArtwork,
             message,
             urgency,
-            email,
-            productId // Optional: link to an existing product
+            // email,
         } = req.body;
 
         // Create the order
@@ -53,7 +51,7 @@ router.post('/', async (req, res) => {
             size,
             message,
             urgency,
-            email,
+            // email,
             personalArtwork: !!personalArtwork // ensure it's a boolean
         });
 

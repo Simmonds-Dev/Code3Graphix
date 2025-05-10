@@ -208,24 +208,26 @@ footer button:hover {
 
 .image-container {
   display: flex;
-  justify-content: flex-end;
-  width: 60%;
+  justify-content: space-between;
 }
 
 .image-container img {
   max-width: 250px;
   height: auto;
-  display: flex;
 }
 
+.partAndDescription {
+  display: flex;
+  align-items: center;
+}
 
-.left-column {
+.top-portion {
   display: flex;
   flex-direction: column;
 }
 
 
-.right-column {
+.bottom-portion {
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -234,12 +236,18 @@ footer button:hover {
 .form-group {
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 .form-group label {
   margin-bottom: 0.5rem;
   font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
 }
+
 
 input,
 textarea {
@@ -282,6 +290,7 @@ button:hover {
 
 #part_number {
   color: white;
+  width: 100%;
 }
 
 #description {
@@ -289,13 +298,23 @@ button:hover {
   width: 100%;
 }
 
-#message {
-  display: flex;
-  padding: .8rem
+#size {
+  color: white;
+  width: 100%;
 }
 
-@media (max-width: 400px) {
-  .image-container img{
+#message {
+  width: 75%;
+}
+
+#quantity {
+  width: 75%;
+}
+
+
+@media (max-width: 768px) {
+  .image-container img {
     max-width: 150px;
+    height: auto;
   }
-};
+}
