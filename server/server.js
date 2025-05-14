@@ -9,10 +9,11 @@ import sequelize from './config/connection.js';
 
 import homeRoutes from './routes/homeRoutes.js';
 import productRoutes from './routes/api/productRoutes.js';
+import loginRoute from './routes/api/loginRoute.js';
+import signupRoute from './routes/api/signupRoute.js';
 // import categoryRoutes from './routes/api/categoryRoutes.js';
 // import tagRoutes from './routes/api/tagRoutes.js';
 // import orderRoutes from './routes/api/orderRoutes.js';
-// import sequelize from './config/connection.js';
 
 dotenv.config();
 
@@ -61,6 +62,8 @@ app.use((req, res, next) => {
 // Routes
 app.use('/', homeRoutes);
 app.use('/api/products', productRoutes);
+app.use('/api/login', loginRoute);
+app.use('/api/signup', signupRoute);
 // app.use('/api/categories', categoryRoutes);
 // app.use('/api/tags', tagRoutes);
 // app.use('/api/orders', orderRoutes);

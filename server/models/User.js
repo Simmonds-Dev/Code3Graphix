@@ -40,14 +40,13 @@ User.init(
                 len: [8, 64],
             },
         },
-        // May not need to keep phone/address
-        user_phone: {
-            type: DataTypes.STRING
-        },
-        user_address: {
-            type: DataTypes.STRING
-        },
-        // ----------------------------------
+        // confirm_password: {
+        //     type: DataTypes.STRING,
+        //     allowNull: false,
+        //     validate: {
+        //         len: [8, 64],
+        //     },
+        // },
         user_role: {
             type: DataTypes.STRING,
             allowNull: false,
