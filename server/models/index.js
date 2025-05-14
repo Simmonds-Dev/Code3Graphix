@@ -3,7 +3,7 @@ import Category from './Category.js';
 import Tag from './Tag.js';
 import ProductTag from './ProductTag.js';
 import User from './User.js';
-import Order from './Order.js';
+import Orders from './Order.js';
 import OrderItem from './OrderItem.js';
 
 Product.belongsTo(User)
@@ -26,21 +26,21 @@ Tag.belongsToMany(Product, {
     }
 });
 
-User.hasMany(Order, {
+User.hasMany(Orders, {
     foreignKey: 'user_id',
     onDelete: 'CASCADE'
 });
 
-Order.belongsTo(User, {
+Orders.belongsTo(User, {
     foreignKey: 'user_id'
 });
 
-Order.hasMany(OrderItem, {
+Orders.hasMany(OrderItem, {
     foreignKey: 'order_id',
     onDelete: 'CASCADE'
 });
 
-OrderItem.belongsTo(Order, {
+OrderItem.belongsTo(Orders, {
     foreignKey: 'order_id'
 });
 
@@ -53,4 +53,4 @@ OrderItem.belongsTo(Product, {
     foreignKey: 'product_id'
 });
 
-export { Product, User, Category, Tag, ProductTag, Order, OrderItem };
+export { Product, User, Category, Tag, ProductTag, Orders, OrderItem };

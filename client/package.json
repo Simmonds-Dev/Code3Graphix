@@ -4,12 +4,10 @@
     "version": "0.0.0",
     "type": "module",
     "scripts": {
-        "dev": "concurrently \"vite\" \"npm run watch\" \"cd client && npm start\"",
+        "dev": "vite",
         "build": "vite build",
-        "lint": "eslint .",
         "preview": "vite preview",
-        "watch": "nodemon server/server.js",
-        "seed": "node server/seeds/seed.js"
+        "start": "vite"
     },
     "dependencies": {
         "bcrypt": "^5.1.1",
