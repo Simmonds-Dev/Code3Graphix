@@ -6,8 +6,6 @@ const Products = () => {
     const [productSelections, setProductSelections] = useState({});
     const navigate = useNavigate();
 
-    console.log('All products:', products);
-
     useEffect(() => {
         fetch('http://localhost:3001/api/products')
             .then((res) => res.json())
@@ -35,10 +33,6 @@ const Products = () => {
 
     const handleSelect = (product) => {
         const selection = productSelections[product.id] || {};
-        console.log("Navigating with product + selection:", {
-            product,
-            ...selection
-        });
 
         navigate('/orders', {
             state: {
@@ -60,18 +54,11 @@ const Products = () => {
 
     const normalizeOptions = (value, type) => {
         if (Array.isArray(value)) {
-            return value.map(v => {
-                if (typeof v === 'string') return v;
-                if (v && typeof v === 'object') {
-                    if (type === 'color') return v.color_name || '';
-                    if (type === 'size') return v.size_name || '';
-                    return '';
-                }
+            return value.map((v) => {
+                if (type === 'color') return v.color_name;
+                if (type === 'size') return v.size_name;
                 return '';
             }).filter(Boolean);
-        }
-        if (typeof value === 'string') {
-            return value.split(',').map(v => v.trim()).filter(Boolean);
         }
         return [];
     };
@@ -106,15 +93,12 @@ const Products = () => {
                                         value={selection.color || ''}
                                         onChange={(e) => handleChange(product.id, 'color', e.target.value)}
                                     >
-                                        {colors.length > 0 ? (
-                                            colors.map((c) => (
-                                                <option key={c} value={c}>
-                                                    {c}
-                                                </option>
-                                            ))
-                                        ) : (
-                                            <option disabled>No colors available</option>
-                                        )}
+                                        <option value="" disabled>Select a color</option>
+                                        {colors.map((colorName) => (
+                                            <option key={colorName} value={colorName}>
+                                                {colorName}
+                                            </option>
+                                        ))}
                                     </select>
                                 </div>
 
@@ -124,15 +108,12 @@ const Products = () => {
                                         value={selection.size || ''}
                                         onChange={(e) => handleChange(product.id, 'size', e.target.value)}
                                     >
-                                        {sizes.length > 0 ? (
-                                            sizes.map((s) => (
-                                                <option key={s} value={s}>
-                                                    {s}
-                                                </option>
-                                            ))
-                                        ) : (
-                                            <option disabled>No sizes available</option>
-                                        )}
+                                        <option value="" disabled>Select a size</option>
+                                        {sizes.map((sizeName) => (
+                                            <option key={sizeName} value={sizeName}>
+                                                {sizeName}
+                                            </option>
+                                        ))}
                                     </select>
                                 </div>
 

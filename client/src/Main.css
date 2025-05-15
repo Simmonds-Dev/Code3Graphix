@@ -420,6 +420,14 @@ button:hover {
   width: 75%;
 }
 
+#color {
+  color: white;
+}
+
+#email {
+  color: white;
+}
+
 
 @media (max-width: 768px) {
   .image-container img {

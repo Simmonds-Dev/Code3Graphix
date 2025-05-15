@@ -6,14 +6,11 @@ import beverageHolderImg from "../assets/beverage_holder.png";
 
 const Orders = () => {
     const location = useLocation();
-    console.log("Received state:", location.state);
-    const { state } = useLocation();
+    const state = location.state;
     const navigate = useNavigate();
     const selectedProduct = state?.product;
-    // Add color and size back into the mix
-    // ________________________________________
-    // const selectedColor = state?.color || '';
-    // const selectedSize = state?.size || '';
+
+    const [decodedEmail, setDecodedEmail] = useState('');
 
     const [formData, setFormData] = useState({
         partNumber: '',
@@ -31,30 +28,34 @@ const Orders = () => {
     useEffect(() => {
         const token = localStorage.getItem("token");
 
-        let decodedEmail = '';
         try {
             if (token) {
                 const decoded = jwtDecode(token);
-                decodedEmail = decoded.user_email || '';
+                setDecodedEmail(decoded.user_email);
+
+                setFormData((prev) => ({
+                    ...prev,
+                    email: decoded.user_email || '',
+                }));
             }
         } catch (err) {
-            console.error("Invalid token", err);
+            console.error('Failed to decode token:', err);
         }
+    }, []);
 
-        console.log("Setting form with product:", selectedProduct);
-        console.log("Decoded email:", decodedEmail);
-
-        if (selectedProduct) {
+    useEffect(() => {
+        if (state && selectedProduct) {
             setFormData((prev) => ({
                 ...prev,
                 partNumber: selectedProduct.id,
                 description: selectedProduct.product_name,
-                size: state?.size || '',
-                color: color?.color || '',
-                email: decodedEmail,
+                size: typeof state.size === 'object' ? state.size.size_name || '' : state.size || '',
+                color: typeof state.color === 'object' ? state.color.color_name || '' : state.color || '',
             }));
         }
-    }, [selectedProduct]);
+    }, [state, selectedProduct]);
+
+
 
     const handleChange = (e) => {
         const { name, value, type, checked, files } = e.target;
@@ -82,7 +83,7 @@ const Orders = () => {
 
             const data = await response.json();
             console.log('Order created successfully:', data);
-            // Optionally, reset the form or redirect the user here
+            // Thinking of implementing email logic here
         } catch (error) {
             console.error('Error submitting order:', error);
         }
@@ -130,7 +131,13 @@ const Orders = () => {
                         <label id="message" htmlFor="message">
                             Please tell us a bit more about your concept. We hope to collaborate with you and we will get back to you A.S.A.P. That way, if there are any additional questions we will have an open line of communication. If you've logged in, your email should be auto-filled below.
                         </label>
-                        <textarea name="message" value={formData.message} onChange={handleChange} required>Type here...</textarea>
+                        <textarea
+                            name="message"
+                            value={formData.message}
+                            onChange={handleChange}
+                            required
+                            placeholder="Type here..."
+                        />
                         <div className='form-group'>
                             <label id="quantity" htmlFor="quantity">
                                 How many were you looking to have done?:
@@ -165,8 +172,7 @@ const Orders = () => {
             <div className="form-group email">
                 <label htmlFor="email">
                     Email:
-                    {/* Will need to adjust value={user_email} once you get JWT set up */}
-                    <input type="email" name="email" value={formData.email} onChange={handleChange} required disabled />
+                    <input id="email" type="email" name="email" value={formData.email} onChange={handleChange} required disabled />
                 </label>
             </div>
 
