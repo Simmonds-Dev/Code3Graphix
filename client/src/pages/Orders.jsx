@@ -1,18 +1,26 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { jwtDecode } from "jwt-decode";
 import beverageHolderImg from "../assets/beverage_holder.png";
 
+
 const Orders = () => {
+    const location = useLocation();
+    console.log("Received state:", location.state);
     const { state } = useLocation();
-    const [products, setProducts = setProductSelections] = useState({});
     const navigate = useNavigate();
     const selectedProduct = state?.product;
+    // Add color and size back into the mix
+    // ________________________________________
+    // const selectedColor = state?.color || '';
+    // const selectedSize = state?.size || '';
 
     const [formData, setFormData] = useState({
         partNumber: '',
         description: '',
         quantity: '',
         size: '',
+        color: '',
         email: '',
         urgency: '',
         message: '',
@@ -21,13 +29,29 @@ const Orders = () => {
     });
 
     useEffect(() => {
+        const token = localStorage.getItem("token");
+
+        let decodedEmail = '';
+        try {
+            if (token) {
+                const decoded = jwtDecode(token);
+                decodedEmail = decoded.user_email || '';
+            }
+        } catch (err) {
+            console.error("Invalid token", err);
+        }
+
+        console.log("Setting form with product:", selectedProduct);
+        console.log("Decoded email:", decodedEmail);
+
         if (selectedProduct) {
             setFormData((prev) => ({
                 ...prev,
                 partNumber: selectedProduct.id,
                 description: selectedProduct.product_name,
-                size: selectedProduct.size || '',
-                // You can add other fields based on available product data
+                size: state?.size || '',
+                color: color?.color || '',
+                email: decodedEmail,
             }));
         }
     }, [selectedProduct]);
@@ -89,6 +113,10 @@ const Orders = () => {
                                     <label htmlFor="size">
                                         Size:
                                         <input id="size" type="text" name="size" value={formData.size} onChange={handleChange} required disabled />
+                                    </label>
+                                    <label htmlFor="color">
+                                        Color:
+                                        <input id="color" type="text" name="color" value={formData.color || ''} onChange={handleChange} required disabled />
                                     </label>
                                 </div>
                             </div>

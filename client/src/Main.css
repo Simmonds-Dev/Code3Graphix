@@ -297,6 +297,7 @@ h1 {
     color: #3a4f61;
     cursor: pointer;
     font-weight: bold;
+}
 
 .orderForm {
   display: flex;

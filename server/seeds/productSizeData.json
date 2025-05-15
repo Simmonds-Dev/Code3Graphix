@@ -1,0 +1,14 @@
+[
+    {
+        "product_id": 1,
+        "size_id": 2
+    },
+    {
+        "product_id": 1,
+        "size_id": 3
+    },
+    {
+        "product_id": 3,
+        "size_id": 1
+    }
+]

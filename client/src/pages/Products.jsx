@@ -6,24 +6,26 @@ const Products = () => {
     const [productSelections, setProductSelections] = useState({});
     const navigate = useNavigate();
 
+    console.log('All products:', products);
+
     useEffect(() => {
         fetch('http://localhost:3001/api/products')
             .then((res) => res.json())
             .then((data) => {
                 setProducts(data);
-                // Initialize selections per product
                 const initialSelections = {};
                 data.forEach((product) => {
-                    const colors = Array.isArray(product.colors)
-                        ? product.colors
-                        : (product.colors || '').split(',');
                     const sizes = Array.isArray(product.sizes)
                         ? product.sizes
-                        : (product.sizes || '').split(',');
+                        : String(product.sizes || '').split(',').map(s => s.trim());
+                    const colors = Array.isArray(product.colors)
+                        ? product.colors
+                        : String(product.colors || '').split(',').map(c => c.trim());
+
                     initialSelections[product.id] = {
                         quantity: 1,
-                        color: colors[0] || '',
                         size: sizes[0] || '',
+                        color: colors[0] || '',
                     };
                 });
                 setProductSelections(initialSelections);
@@ -32,13 +34,16 @@ const Products = () => {
     }, []);
 
     const handleSelect = (product) => {
-        const selection = productSelections[product.id];
+        const selection = productSelections[product.id] || {};
+        console.log("Navigating with product + selection:", {
+            product,
+            ...selection
+        });
+
         navigate('/orders', {
             state: {
                 product,
-                quantity: selection.quantity,
-                color: selection.color,
-                size: selection.size,
+                ...selection
             },
         });
     };
@@ -53,6 +58,25 @@ const Products = () => {
         }));
     };
 
+    const normalizeOptions = (value, type) => {
+        if (Array.isArray(value)) {
+            return value.map(v => {
+                if (typeof v === 'string') return v;
+                if (v && typeof v === 'object') {
+                    if (type === 'color') return v.color_name || '';
+                    if (type === 'size') return v.size_name || '';
+                    return '';
+                }
+                return '';
+            }).filter(Boolean);
+        }
+        if (typeof value === 'string') {
+            return value.split(',').map(v => v.trim()).filter(Boolean);
+        }
+        return [];
+    };
+
+
     return (
         <>
             <h1>Featured Products</h1>
@@ -60,12 +84,8 @@ const Products = () => {
                 <div className="product-grid">
                     {products.map((product) => {
                         const selection = productSelections[product.id] || {};
-                        const colors = Array.isArray(product.colors)
-                            ? product.colors
-                            : (product.colors || '').split(',');
-                        const sizes = Array.isArray(product.sizes)
-                            ? product.sizes
-                            : (product.sizes || '').split(',');
+                        const colors = normalizeOptions(product.colors, 'color');
+                        const sizes = normalizeOptions(product.sizes, 'size');
 
                         return (
                             <div key={product.id} className="product-card">
@@ -79,20 +99,22 @@ const Products = () => {
                                 <h2>{product.product_name}</h2>
                                 <p>Category: {product.category?.category_name}</p>
                                 <p>Price: ${product.product_price}</p>
-                                <p>Tags: {product.tags?.map(tag => tag.tag_name).join(', ')}</p>
-
 
                                 <div className="form-group">
                                     <label>Color:</label>
                                     <select
                                         value={selection.color || ''}
-                                        onChange={(e) =>
-                                            handleChange(product.id, 'color', e.target.value)
-                                        }
+                                        onChange={(e) => handleChange(product.id, 'color', e.target.value)}
                                     >
-                                        {colors.map((c) => (
-                                            <option key={c} value={c}>{c}</option>
-                                        ))}
+                                        {colors.length > 0 ? (
+                                            colors.map((c) => (
+                                                <option key={c} value={c}>
+                                                    {c}
+                                                </option>
+                                            ))
+                                        ) : (
+                                            <option disabled>No colors available</option>
+                                        )}
                                     </select>
                                 </div>
 
@@ -100,13 +122,17 @@ const Products = () => {
                                     <label>Size:</label>
                                     <select
                                         value={selection.size || ''}
-                                        onChange={(e) =>
-                                            handleChange(product.id, 'size', e.target.value)
-                                        }
+                                        onChange={(e) => handleChange(product.id, 'size', e.target.value)}
                                     >
-                                        {sizes.map((s) => (
-                                            <option key={s} value={s}>{s}</option>
-                                        ))}
+                                        {sizes.length > 0 ? (
+                                            sizes.map((s) => (
+                                                <option key={s} value={s}>
+                                                    {s}
+                                                </option>
+                                            ))
+                                        ) : (
+                                            <option disabled>No sizes available</option>
+                                        )}
                                     </select>
                                 </div>
 
