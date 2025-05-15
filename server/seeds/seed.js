@@ -1,5 +1,5 @@
 import sequelize from '../config/connection.js';
-import { Product, User, Category, Tag, ProductTag, Orders, OrderItem } from '../models/index.js';
+import { Product, User, Category, Color, ProductColor, Size, ProductSize, Orders, OrderItem } from '../models/index.js';
 import { readFile } from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -20,16 +20,20 @@ const seedAll = async () => {
     const userData = await loadJSON('./userData.json');
     const categoryData = await loadJSON('./categoryData.json');
     const productData = await loadJSON('./productData.json');
-    const tagData = await loadJSON('./tagData.json');
-    const productTagData = await loadJSON('./productTagData.json');
+    const colorData = await loadJSON('./colorData.json');
+    const productColorData = await loadJSON('./productColorData.json');
+    const sizeData = await loadJSON('./sizeData.json');
+    const productSizeData = await loadJSON('./productSizeData.json');
     const orderData = await loadJSON('./orderData.json');
     const orderItemData = await loadJSON('./orderItemData.json');
 
     await User.bulkCreate(userData, { individualHooks: true, returning: true });
     await Category.bulkCreate(categoryData);
     await Product.bulkCreate(productData);
-    await Tag.bulkCreate(tagData);
-    await ProductTag.bulkCreate(productTagData);
+    await Color.bulkCreate(colorData);
+    await ProductColor.bulkCreate(productColorData);
+    await Size.bulkCreate(sizeData);
+    await ProductSize.bulkCreate(productSizeData);
     await Orders.bulkCreate(orderData);
     await OrderItem.bulkCreate(orderItemData);
 

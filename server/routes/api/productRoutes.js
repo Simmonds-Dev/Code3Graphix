@@ -1,5 +1,13 @@
 import express from 'express';
-import { Product, Category, Tag, ProductTag } from '../../models/index.js';
+import {
+    Product,
+    Category,
+    User,
+    Color,
+    Size,
+    ProductColor,
+    ProductSize,
+} from '../../models/index.js';
 
 const router = express.Router();
 
@@ -9,9 +17,15 @@ const router = express.Router();
 router.get('/', async (req, res) => {
     try {
         const products = await Product.findAll({
-            include: [Category, Tag],
+            include: [
+                { model: User, attributes: ['id', 'user_name', 'user_email'] },
+                { model: Category },
+                { model: Color, through: { attributes: [] } },
+                { model: Size, through: { attributes: [] }  },
+            ],
         });
         res.json(products);
+        console.log(JSON.stringify(products, null, 2));
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -23,7 +37,7 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
     try {
         const product = await Product.findByPk(req.params.id, {
-            include: [Category, Tag],
+            include: [Category, Color, Size],
         });
 
         if (!product) {
@@ -43,13 +57,21 @@ router.post('/', async (req, res) => {
     try {
         const product = await Product.create(req.body);
 
-        // If tag IDs are provided, create associations in ProductTag
-        if (req.body.tagIds && req.body.tagIds.length) {
-            const productTagArr = req.body.tagIds.map((tag_id) => ({
+        // Handle colors and sizes
+        if (req.body.colorIds?.length) {
+            const productColors = req.body.colorIds.map((color_id) => ({
                 product_id: product.id,
-                tag_id,
+                color_id,
             }));
-            await ProductTag.bulkCreate(productTagArr);
+            await ProductColor.bulkCreate(productColors);
+        }
+
+        if (req.body.sizeIds?.length) {
+            const productSizes = req.body.sizeIds.map((size_id) => ({
+                product_id: product.id,
+                size_id,
+            }));
+            await ProductSize.bulkCreate(productSizes);
         }
 
         res.status(201).json(product);
@@ -71,21 +93,24 @@ router.put('/:id', async (req, res) => {
             return res.status(404).json({ message: 'Product not found.' });
         }
 
-        // Handle tags if included
-        if (req.body.tagIds) {
-            const productTags = await ProductTag.findAll({ where: { product_id: req.params.id } });
+        // Update color associations
+        if (req.body.colorIds) {
+            await ProductColor.destroy({ where: { product_id: req.params.id } });
+            const productColors = req.body.colorIds.map((color_id) => ({
+                product_id: req.params.id,
+                color_id,
+            }));
+            await ProductColor.bulkCreate(productColors);
+        }
 
-            const existingTagIds = productTags.map(({ tag_id }) => tag_id);
-            const newTagIds = req.body.tagIds.filter((tag_id) => !existingTagIds.includes(tag_id));
-            const tagsToRemove = productTags.filter(({ tag_id }) => !req.body.tagIds.includes(tag_id));
-
-            await Promise.all([
-                ProductTag.destroy({ where: { id: tagsToRemove.map(({ id }) => id) } }),
-                ProductTag.bulkCreate(newTagIds.map((tag_id) => ({
-                    product_id: req.params.id,
-                    tag_id,
-                }))),
-            ]);
+        // Update size associations
+        if (req.body.sizeIds) {
+            await ProductSize.destroy({ where: { product_id: req.params.id } });
+            const productSizes = req.body.sizeIds.map((size_id) => ({
+                product_id: req.params.id,
+                size_id,
+            }));
+            await ProductSize.bulkCreate(productSizes);
         }
 
         res.json({ message: 'Product updated.' });
