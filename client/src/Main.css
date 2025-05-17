@@ -141,7 +141,8 @@ h1 {
 
 #rotating-text {
   display: inline-block;
-  white-space: nowrap; /* Prevent word wrapping */
+  white-space: nowrap;
+  /* Prevent word wrapping */
   background: linear-gradient(90deg, #ff6ec4, #7873f5, #4ADEDE, #9effa9);
   background-size: 300% 300%;
   -webkit-background-clip: text;
@@ -157,9 +158,11 @@ h1 {
   0% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
+
   100% {
     background-position: 0% 50%;
   }
@@ -214,6 +217,7 @@ h1 {
   0% {
     transform: translateX(0%);
   }
+
   100% {
     transform: translateX(-50%);
   }
@@ -237,66 +241,72 @@ h1 {
 
 
 .login-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background: #f2f2f2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #011627;
+  border-radius: 10px;
 }
 
 .login-form {
-    background: #fff;
-    padding: 30px 40px;
-    border-radius: 10px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 400px;
-    box-sizing: border-box;
+  background: #011627;
+  padding: 30px 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px #ffffffb8;
+  width: 100%;
+  max-width: 400px;
+  box-sizing: border-box;
 }
 
 .login-form h2 {
-    text-align: center;
-    margin-bottom: 20px;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
 .login-form input {
-    color: black;
-    width: 100%;
-    padding: 12px 14px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 16px;
-    box-sizing: border-box;
+  color: black;
+  width: 100%;
+  padding: 12px 14px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+  box-sizing: border-box;
 }
 
 .login-form button {
-    width: 100%;
-    padding: 12px;
-    background-color: #577590;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+  width: 100%;
+  padding: 12px;
+  background-color: #577590;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 .login-form button:hover {
-    background-color: #3a4f61;
+  background-color: #3a4f61;
 }
 
 .login-form p {
-    text-align: center;
-    margin-top: 10px;
-    font-size: 14px;
-    color: #333;
+  text-align: center;
+  margin-top: 10px;
+  font-size: 14px;
+  color: white;
 }
 
 .login-form span {
-    color: #3a4f61;
-    cursor: pointer;
-    font-weight: bold;
+  color: #2a87d7;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.login-form span:hover {
+  color: #577590;
+  cursor: pointer;
+  font-weight: bold;
 }
 
 .orderForm {
@@ -427,6 +437,33 @@ button:hover {
 #email {
   color: white;
 }
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.logoutModal {
+  background: #011627;
+  padding: 30px 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px #ffffffb8;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  font-size: 1.2rem;
+}
+
+.logoutModal p {
+  color: white;
+}
+
 
 
 @media (max-width: 768px) {
