@@ -40,6 +40,7 @@ router.post('/', async (req, res) => {
             user: { id: user.id, user_name: user.user_name }
         });
     } catch (err) {
+        console.error('Login error:', err);
         res.status(500).json({ error: err.message });
     }
 });
