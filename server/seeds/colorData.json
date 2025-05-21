@@ -1,22 +1,14 @@
 [
     {
         "id": 1,
-        "color_name": "Black"
+        "color_name": "Silver"
     },
     {
         "id": 2,
-        "color_name": "White"
+        "color_name": "Brown"
     },
     {
         "id": 3,
-        "color_name": "Red"
-    },
-    {
-        "id": 4,
-        "color_name": "Blue"
-    },
-    {
-        "id": 5,
-        "color_name": "Wood Grain"
-    } 
+        "color_name": "Black"
+    }
 ]

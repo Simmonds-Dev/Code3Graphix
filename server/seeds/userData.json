@@ -1,11 +1,13 @@
 [
     {
+        "id": 1,
         "user_name": "admin",
         "user_email": "admin@code3graphix.com",
         "user_password": "test",
         "user_role": "admin"
     },
     {
+        "id": 2,
         "user_name": "chris",
         "user_email": "chris@email.com",
         "user_password": "test",

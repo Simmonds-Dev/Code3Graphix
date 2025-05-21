@@ -8,6 +8,8 @@ import {
     ProductColor,
     ProductSize,
 } from '../../models/index.js';
+import { Op } from 'sequelize';
+
 
 const router = express.Router();
 
@@ -21,13 +23,42 @@ router.get('/', async (req, res) => {
                 { model: User, attributes: ['id', 'user_name', 'user_email'] },
                 { model: Category },
                 { model: Color, through: { attributes: [] } },
-                { model: Size, through: { attributes: [] }  },
+                { model: Size, through: { attributes: [] } },
             ],
         });
         res.json(products);
-        console.log(JSON.stringify(products, null, 2));
     } catch (err) {
         res.status(500).json({ error: err.message });
+    }
+});
+
+
+router.get('/category/:category_name', async (req, res) => {
+    try {
+        const category = await Category.findOne({
+            where: {
+                category_name: {
+                    [Op.like]: req.params.category_name 
+                }
+            },
+            include: [{
+                model: Product,
+                include: [Color, Size]
+            }]
+        });
+
+        if (!category) {
+            console.log('No category found with name:', req.params.category_name);
+            return res.status(404).json({ message: 'Category not found' });
+        }
+
+        console.log('Found category:', category.category_name);
+        console.log('Products:', category.products);
+
+        res.json(category.products);
+    } catch (err) {
+        console.error('Error in /category route:', err);
+        res.status(500).json({ message: 'Server error', error: err.message });
     }
 });
 

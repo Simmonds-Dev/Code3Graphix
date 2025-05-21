@@ -1,11 +1,14 @@
 [
     {
+        "id": 1,
         "size_name": "Small"
     },
     {
+        "id": 2,
         "size_name": "Medium"
     },
     {
+        "id": 3,
         "size_name": "Large"
     }
 ]

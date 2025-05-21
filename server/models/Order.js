@@ -19,20 +19,72 @@ Orders.init(
                 key: 'id'
             }
         },
-        total_amount: {
-            type: DataTypes.DECIMAL(10, 2),
+        partNumber: {
+            type: DataTypes.INTEGER,
             allowNull: false,
+            defaultValue: 1
         },
-        order_status: {
+        productId: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            defaultValue: 1
+        },
+        description: {
             type: DataTypes.STRING,
             allowNull: false,
-            defaultValue: 'pending', // pending | processing | shipped | completed | canceled
+            defaultValue: ''
         },
-        order_date: {
-            type: DataTypes.DATE,
+        quantity: {
+            type: DataTypes.INTEGER,
             allowNull: false,
-            defaultValue: DataTypes.NOW
-        }
+            defaultValue: 1
+        },
+        size: {
+            type: DataTypes.STRING,
+            allowNull: true,
+            defaultValue: ''
+        },
+        color: {
+            type: DataTypes.STRING,
+            allowNull: true,
+            defaultValue: ''
+        },
+        email: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            defaultValue: ''
+        },
+        urgency: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
+        message: {
+            type: DataTypes.TEXT,
+            allowNull: true
+        },
+        personalArtwork: {
+            type: DataTypes.BOOLEAN,
+            allowNull: true
+        },
+        filePath: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
+        // total_amount: {
+        //     type: DataTypes.DECIMAL(10, 2),
+        //     allowNull: false,
+        //     defaultValue: 0.0
+        // },
+        // order_status: {
+        //     type: DataTypes.STRING,
+        //     allowNull: false,
+        //     defaultValue: 'pending'
+        // },
+        // order_date: {
+        //     type: DataTypes.DATE,
+        //     allowNull: false,
+        //     defaultValue: DataTypes.NOW
+        // }
     },
     {
         timestamps: true,
@@ -43,4 +95,4 @@ Orders.init(
     }
 );
 
-export default Orders ;
+export default Orders;
