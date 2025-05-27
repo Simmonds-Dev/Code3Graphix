@@ -1,23 +1,50 @@
 [
     {
-        "product_name": "20oz Stainless Steel Tumbler",
+        "id": 1,
+        "product_name": "Tumbler",
+        "product_price": 26,
         "product_description": "Laser engraved custom tumbler, keeps drinks cold for 12 hours.",
-        "product_price": 25.99,
         "category_id": 1,
         "user_id": 1
     },
     {
-        "product_name": "Wooden Achievement Plaque",
+        "id": 2,
+        "product_name": "Drink Holder",
+        "product_price": 20,
+        "product_description": "Customize a drink holder for your favorite canned beverages",
+        "category_id": 1,
+        "user_id": 1
+    },
+    {
+        "id": 3,
+        "product_name": "Wooden Plaque",
+        "product_price": 45,
         "product_description": "Custom engraved wood plaque for awards and recognition.",
-        "product_price": 45.00,
         "category_id": 2,
         "user_id": 1
     },
     {
+        "id": 4,
         "product_name": "Leather Keychain",
+        "product_price": 10,
         "product_description": "Durable leather keychain, customizable with name or initials.",
-        "product_price": 9.99,
         "category_id": 3,
+        "user_id": 1
+    },
+    {
+        "id": 5,
+        "product_name": "Knives",
+        "product_price": 75,
+        "product_description": "Customize your trusty knives.",
+        "category_id": 4,
+        "user_id": 1
+    },
+    {
+        "id": 6,
+        "product_name": "Gun Parts",
+        "product_price": 150,
+        "product_description": "Customize your firearms.",
+        "category_id": 4,
         "user_id": 1
     }
 ]

@@ -1,14 +1,18 @@
 [
     {
-        "category_name": "Tumblers"
+        "id": 1,
+        "category_name": "Drinkware"
     },
     {
-        "category_name": "Plaques"
+        "id": 2,
+        "category_name": "Wood"
     },
     {
-        "category_name": "Keychains"
+        "id": 3,
+        "category_name": "Leather"
     },
     {
-        "category_name": "Custom Signs"
+        "id": 4,
+        "category_name": "Metal"
     }
 ]

@@ -40,10 +40,10 @@ OrderItem.init(
             type: DataTypes.STRING,
             allowNull: true
         },
-        unit_price: {
-            type: DataTypes.DECIMAL(10, 2),
-            allowNull: false
-        }
+        // unit_price: {
+        //     type: DataTypes.DECIMAL(10, 2),
+        //     allowNull: false
+        // }
     },
     {
         timestamps: true,

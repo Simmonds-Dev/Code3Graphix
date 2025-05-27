@@ -8,12 +8,11 @@ import sequelize from './config/connection.js';
 
 
 import homeRoutes from './routes/homeRoutes.js';
-import productRoutes from './routes/api/productRoutes.js';
+import shopRoutes from './routes/api/shopRoutes.js';
 import loginRoute from './routes/api/loginRoute.js';
 import signupRoute from './routes/api/signupRoute.js';
 // import categoryRoutes from './routes/api/categoryRoutes.js';
-// import tagRoutes from './routes/api/tagRoutes.js';
-// import orderRoutes from './routes/api/orderRoutes.js';
+import orderRoutes from './routes/api/orderRoutes.js';
 
 dotenv.config();
 
@@ -36,6 +35,8 @@ const corsOptions = {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors(corsOptions));
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 
 app.use('/', (req, res, next) => {
@@ -61,12 +62,10 @@ app.use((req, res, next) => {
 
 // Routes
 app.use('/', homeRoutes);
-app.use('/api/products', productRoutes);
+app.use('/api/shop', shopRoutes);
 app.use('/api/login', loginRoute);
 app.use('/api/signup', signupRoute);
-// app.use('/api/categories', categoryRoutes);
-// app.use('/api/tags', tagRoutes);
-// app.use('/api/orders', orderRoutes);
+app.use('/api/orders', orderRoutes);
 
 app.use(express.static(path.join(__dirname, '..', 'client', 'dist')));
 app.get(/.*/, (req, res) => {

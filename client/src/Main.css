@@ -464,7 +464,20 @@ button:hover {
   color: white;
 }
 
+.category-grid {
+  display: flex;
+  flex-direction: column;
+}
 
+.category-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.catImg {
+  width: 50%;
+}
 
 @media (max-width: 768px) {
   .image-container img {

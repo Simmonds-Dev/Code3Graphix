@@ -2,6 +2,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { jwtDecode } from "jwt-decode";
 import beverageHolderImg from "../assets/beverage_holder.png";
+import emailjs from '@emailjs/browser';
 
 
 const Orders = () => {
@@ -11,6 +12,8 @@ const Orders = () => {
     const selectedProduct = state?.product;
 
     const [decodedEmail, setDecodedEmail] = useState('');
+    const [token, setToken] = useState('');
+
 
     const [formData, setFormData] = useState({
         partNumber: '',
@@ -26,13 +29,12 @@ const Orders = () => {
     });
 
     useEffect(() => {
-        const token = localStorage.getItem("token");
-
+        const storedToken = localStorage.getItem("token");
         try {
-            if (token) {
-                const decoded = jwtDecode(token);
+            if (storedToken) {
+                const decoded = jwtDecode(storedToken);
                 setDecodedEmail(decoded.user_email);
-
+                setToken(storedToken); // Sets the token in state
                 setFormData((prev) => ({
                     ...prev,
                     email: decoded.user_email || '',
@@ -48,6 +50,7 @@ const Orders = () => {
             setFormData((prev) => ({
                 ...prev,
                 partNumber: selectedProduct.id,
+                productId: selectedProduct.id,
                 description: selectedProduct.product_name,
                 size: typeof state.size === 'object' ? state.size.size_name || '' : state.size || '',
                 color: typeof state.color === 'object' ? state.color.color_name || '' : state.color || '',
@@ -68,13 +71,29 @@ const Orders = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log('Order submitted:', formData);
+
+        const formPayload = new FormData();
+        formPayload.append("partNumber", formData.partNumber);
+        formPayload.append("productId", formData.productId);
+        formPayload.append("description", formData.description);
+        formPayload.append("quantity", formData.quantity);
+        formPayload.append("size", formData.size);
+        formPayload.append("color", formData.color);
+        formPayload.append("email", formData.email);
+        formPayload.append("urgency", formData.urgency);
+        formPayload.append("message", formData.message);
+        formPayload.append("personalArtwork", formData.personalArtwork);
+        if (formData.file) {
+            formPayload.append("file", formData.file);
+        }
+
         try {
             const response = await fetch('http://localhost:3001/api/orders', {
                 method: 'POST',
+                body: formPayload,
                 headers: {
-                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`
                 },
-                body: JSON.stringify(formData),
             });
 
             if (!response.ok) {
@@ -83,11 +102,35 @@ const Orders = () => {
 
             const data = await response.json();
             console.log('Order created successfully:', data);
-            // Thinking of implementing email logic here
+
+            // Send email via EmailJS
+            await emailjs.send(
+                'development-test',
+                'template_e88npia',
+                {
+                    partNumber: formData.partNumber,
+                    description: formData.description,
+                    quantity: formData.quantity,
+                    size: formData.size,
+                    color: formData.color,
+                    email: formData.email,
+                    urgency: formData.urgency,
+                    message: formData.message,
+                    personalArtwork: formData.personalArtwork ? 'Yes' : 'No',
+                },
+                'RMw_ErOYxez-alnMd'
+            );
+
+            console.log('Email sent successfully!');
+
+            // Optionally navigate or reset the form
+            // navigate('/confirmation', { state: { order: data } });
+
         } catch (error) {
-            console.error('Error submitting order:', error);
+            console.error('Error submitting order or sending email:', error);
         }
     };
+
 
     return (
         <form onSubmit={handleSubmit} className="orderForm">
@@ -118,6 +161,10 @@ const Orders = () => {
                                     <label htmlFor="color">
                                         Color:
                                         <input id="color" type="text" name="color" value={formData.color || ''} onChange={handleChange} required disabled />
+                                    </label>
+                                    <label htmlFor="email">
+                                        Email:
+                                        <input id="email" type="email" name="email" value={formData.email} onChange={handleChange} required disabled />
                                     </label>
                                 </div>
                             </div>
@@ -169,12 +216,7 @@ const Orders = () => {
                 </div>
             </div>
 
-            <div className="form-group email">
-                <label htmlFor="email">
-                    Email:
-                    <input id="email" type="email" name="email" value={formData.email} onChange={handleChange} required disabled />
-                </label>
-            </div>
+
 
             <button type="submit">Submit</button>
 
