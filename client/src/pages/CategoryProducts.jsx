@@ -54,6 +54,11 @@ const CategoryProducts = () => {
         });
     };
 
+    console.log("Product:", products);
+    console.log("Colors:", products.Color);
+    console.log("Sizes:", products.Size);
+
+
     return (
         <>
             <h1>{category_name.charAt(0).toUpperCase() + category_name.slice(1).toLowerCase()} Products</h1>
@@ -70,11 +75,13 @@ const CategoryProducts = () => {
                             <p>${prod.product_price}</p>
                             <label>Color:
                                 <select value={selection.color} onChange={(e) => handleChange(prod.id, 'color', e.target.value)}>
+                                    <option>--Select Color--</option>
                                     {colors.map(color => <option key={color} value={color}>{color}</option>)}
                                 </select>
                             </label>
                             <label>Size:
                                 <select value={selection.size} onChange={(e) => handleChange(prod.id, 'size', e.target.value)}>
+                                    <option>--Select Size--</option>
                                     {sizes.map(size => <option key={size} value={size}>{size}</option>)}
                                 </select>
                             </label>

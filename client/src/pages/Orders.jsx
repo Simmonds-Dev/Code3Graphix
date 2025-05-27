@@ -52,8 +52,9 @@ const Orders = () => {
                 partNumber: selectedProduct.id,
                 productId: selectedProduct.id,
                 description: selectedProduct.product_name,
-                size: typeof state.size === 'object' ? state.size.size_name || '' : state.size || '',
-                color: typeof state.color === 'object' ? state.color.color_name || '' : state.color || '',
+                size: state.size || '',
+                color: state.color || '',
+
             }));
         }
     }, [state, selectedProduct]);
