@@ -2,6 +2,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { jwtDecode } from "jwt-decode";
 import beverageHolderImg from "../assets/beverage_holder.png";
+import emailjs from '@emailjs/browser';
 
 
 const Orders = () => {
@@ -102,11 +103,31 @@ const Orders = () => {
             const data = await response.json();
             console.log('Order created successfully:', data);
 
-            // OPTIONAL: Navigate to confirmation page or clear form
+            // Send email via EmailJS
+            await emailjs.send(
+                'development-test',     // Replace with your actual Service ID
+                'template_e88npia',    // Replace with your actual Template ID
+                {
+                    partNumber: formData.partNumber,
+                    description: formData.description,
+                    quantity: formData.quantity,
+                    size: formData.size,
+                    color: formData.color,
+                    email: formData.email,
+                    urgency: formData.urgency,
+                    message: formData.message,
+                    personalArtwork: formData.personalArtwork ? 'Yes' : 'No',
+                },
+                'RMw_ErOYxez-alnMd'      // Replace with your Public Key
+            );
+
+            console.log('Email sent successfully!');
+
+            // Optionally navigate or reset the form
             // navigate('/confirmation', { state: { order: data } });
 
         } catch (error) {
-            console.error('Error submitting order:', error);
+            console.error('Error submitting order or sending email:', error);
         }
     };
 

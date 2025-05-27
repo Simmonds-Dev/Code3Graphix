@@ -85,6 +85,7 @@ router.post('/', withAuth, upload.single('file'), async (req, res) => {
         console.log('req.body:', req.body);
 
         const parsedProductId = parseInt(productId, 10); // 👈 This is important
+        const parsedQuantity = parseInt(quantity, 10);
 
         if (!parsedProductId) {
             return res.status(400).json({ error: 'Invalid productId' });
@@ -100,7 +101,7 @@ router.post('/', withAuth, upload.single('file'), async (req, res) => {
             color,
             email: userEmail || req.body.user_email,
             message,
-            quantity,
+            quantity: parsedQuantity,
             urgency,
             personalArtwork: personalArtwork === 'true' || personalArtwork === true,
             filePath
@@ -109,13 +110,10 @@ router.post('/', withAuth, upload.single('file'), async (req, res) => {
         if (productId) {
             await OrderItem.create({
                 order_id: order.id,
-                product_id: productId,
-                quantity,
+                product_id: parsedProductId,
+                quantity: parsedQuantity,
                 part_number: partNumber
             });
-
-            // Optional email function
-            // await sendConfirmationEmail(order.email, order.id);
         }
 
         res.status(201).json(order);
