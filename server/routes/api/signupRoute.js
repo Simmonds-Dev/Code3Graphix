@@ -25,7 +25,7 @@ router.post('/', async (req, res) => {
 
         const token = jwt.sign(
             {
-                id: user.id,
+                user_id: user.id,
                 user_name: user.user_name,
                 user_email: user.user_email
             },
@@ -35,7 +35,7 @@ router.post('/', async (req, res) => {
 
         res.status(200).json({
             token,
-            user: { id: user.id, user_name: user.user_name }
+            user: { user_id: user.id, user_name: user.user_name }
         });
     } catch (err) {
         console.error('Signup error:', err);

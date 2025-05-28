@@ -19,16 +19,6 @@ Orders.init(
                 key: 'id'
             }
         },
-        partNumber: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            defaultValue: 1
-        },
-        productId: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            defaultValue: 1
-        },
         description: {
             type: DataTypes.STRING,
             allowNull: false,

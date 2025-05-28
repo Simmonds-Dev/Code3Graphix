@@ -54,11 +54,6 @@ const CategoryProducts = () => {
         });
     };
 
-    console.log("Product:", products);
-    console.log("Colors:", products.Color);
-    console.log("Sizes:", products.Size);
-
-
     return (
         <>
             <h1>{category_name.charAt(0).toUpperCase() + category_name.slice(1).toLowerCase()} Products</h1>
