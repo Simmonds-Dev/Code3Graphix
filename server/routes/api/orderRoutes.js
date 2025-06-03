@@ -4,6 +4,8 @@ import withAuth from '../../utils/withAuth.js';
 import multer from 'multer';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { sendOrderEmail } from '../../utils/email.js';
+import fs from 'fs/promises';
 
 const router = express.Router();
 
@@ -103,11 +105,30 @@ router.post('/', withAuth, upload.single('file'), async (req, res) => {
             filePath
         });
 
+        let updatedFilePath = null;
+
+        if (req.file) {
+            const ext = path.extname(req.file.originalname);
+            const newFileName = `order-${order.id}-${req.file.originalname.replace(/\s+/g, '_')}`;
+            const newFilePath = path.join(path.dirname(req.file.path), newFileName);
+
+            try {
+                await fs.rename(req.file.path, newFilePath);
+                updatedFilePath = newFilePath;
+
+                await order.update({ filePath: updatedFilePath});
+            } catch (renameErr) {
+                console.error('Error renaming file:', renameErr);
+            }
+        }
+
         // Step 2: Create OrderItem (join table between order & product)
         await OrderItem.create({
             order_id: order.id,
             product_id: parsedProductId,
             quantity: parsedQuantity,
+            color,
+            size
         });
 
         // Step 3: Fetch full order with associations
@@ -115,7 +136,7 @@ router.post('/', withAuth, upload.single('file'), async (req, res) => {
             include: [
                 {
                     model: OrderItem,
-                    include: [{ model: Product }]
+                    include: [ Product ]
                 },
                 {
                     model: User,
@@ -124,12 +145,21 @@ router.post('/', withAuth, upload.single('file'), async (req, res) => {
             ]
         });
 
+
+        // Step 4: Send email confirmation
+        try {
+            await sendOrderEmail(fullOrder, updatedFilePath);
+            console.log('Back End - Email sent!');
+        } catch (emailErr) {
+            console.error('Email failed:', emailErr)
+        }
+
         // Final response to frontend
         console.log(fullOrder);
         res.status(201).json(fullOrder);
 
     } catch (err) {
-        console.error('Order submission error:', err);
+        console.error('Back End - Order submission error:', err);
         res.status(500).json({ error: err.message });
     }
 });

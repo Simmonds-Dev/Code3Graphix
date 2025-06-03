@@ -2,7 +2,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { jwtDecode } from "jwt-decode";
 import beverageHolderImg from "../assets/beverage_holder.png";
-import emailjs from '@emailjs/browser';
 
 
 const Orders = () => {
@@ -13,7 +12,6 @@ const Orders = () => {
 
     const [decodedEmail, setDecodedEmail] = useState('');
     const [token, setToken] = useState('');
-
 
     const [formData, setFormData] = useState({
         partNumber: '',
@@ -34,7 +32,7 @@ const Orders = () => {
             if (storedToken) {
                 const decoded = jwtDecode(storedToken);
                 setDecodedEmail(decoded.user_email);
-                setToken(storedToken); // Sets the token in state
+                setToken(storedToken);
                 setFormData((prev) => ({
                     ...prev,
                     email: decoded.user_email || '',
@@ -54,12 +52,9 @@ const Orders = () => {
                 description: selectedProduct.product_name,
                 size: state.size || '',
                 color: state.color || '',
-
             }));
         }
     }, [state, selectedProduct]);
-
-
 
     const handleChange = (e) => {
         const { name, value, type, checked, files } = e.target;
@@ -71,7 +66,7 @@ const Orders = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Order submitted:', formData);
+        console.log('Front End - Order submitted:', formData);
 
         const formPayload = new FormData();
         formPayload.append("productId", formData.productId);
@@ -101,62 +96,13 @@ const Orders = () => {
             }
 
             const data = await response.json();
+            console.log('Front End - Order created successfully:', data);
 
-            const orderId = data.id; 
-            const {
-                description,
-                quantity,
-                size,
-                color,
-                email,
-                urgency,
-                message,
-                personalArtwork
-            } = data;
-
-            const orderItem = data.order_items?.[0];
-            const product = orderItem?.product;
-
-            const productId = product?.id;
-            const productName = product?.product_name;
-            const productPrice = product?.product_price;
-
-            const customerName = data.user?.user_name;
-
-            const emailPayload = {
-                orderId: data.id,
-                productId: product?.id,
-                productName: product?.product_name,
-                productPrice: product?.product_price,
-                description: data.description,
-                quantity: data.quantity,
-                size: data.size,
-                color: data.color,
-                email: data.email,
-                urgency: data.urgency,
-                message: data.message,
-                personalArtwork: data.personalArtwork ? 'Yes' : 'No',
-                customerName: data.user?.user_name,
-            };
-
-            console.log('Order created successfully:', data);
-            console.log('Sending Email:', emailPayload);
-
-            // Send email
-            await emailjs.send(
-                'development-test',
-                'template_e88npia',
-                emailPayload,
-                'RMw_ErOYxez-alnMd'
-            );
-
-            console.log('Email sent successfully!');
-
-            // Optionally navigate or reset the form
-            // navigate('/confirmation', { state: { order: data } });
+            // Navigate to a confirmation page
+            navigate('/confirmation', { state: { order: formData } });
 
         } catch (error) {
-            console.error('Error submitting order or sending email:', error);
+            console.error('Front End - Error submitting order:', error);
         }
     };
 

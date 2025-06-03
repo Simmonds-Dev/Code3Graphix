@@ -479,6 +479,30 @@ button:hover {
   width: 50%;
 }
 
+.confirmation-container {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    border-radius: 12px;
+    background: #f9f9f9;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    font-family: sans-serif;
+}
+
+.confirmation-container h1 {
+    color: #2c7a7b;
+}
+
+.confirmation-container ul {
+    list-style: none;
+    padding: 0;
+}
+
+.confirmation-container li {
+    margin-bottom: 0.5rem;
+}
+
+
 @media (max-width: 768px) {
   .image-container img {
     max-width: 150px;

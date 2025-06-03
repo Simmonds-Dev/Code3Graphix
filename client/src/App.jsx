@@ -5,6 +5,7 @@ import Home from './pages/Home.jsx';
 import Shop from './pages/Shop.jsx';
 import Orders from './pages/Orders.jsx';
 import Login from './pages/Login.jsx';
+import Confirmation from './pages/Confirmation.jsx';
 import CategoryProducts from './pages/CategoryProducts.jsx';
 import './Main.css'
 
@@ -20,6 +21,7 @@ const App = () => {
           <Route path="/shop/:category_name" element={<CategoryProducts />} />
           <Route path="/orders" element={<Orders />} /> 
           <Route path="/login" element={<Login />} />
+          <Route path="/confirmation" element={Confirmation}></Route>
         </Routes>
       </div>
     </Router>

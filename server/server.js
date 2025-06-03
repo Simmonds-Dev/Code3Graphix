@@ -40,13 +40,12 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 
 app.use('/', (req, res, next) => {
-    console.log('Requested route:', req.path);
     next();
 });
 
 
 // JWT Middleware
-app.use((req, res, next) => {
+export const authenticateJWT = (req, res, next) => {
     const authHeader = req.headers.authorization;
     if (authHeader) {
         const token = authHeader.split(' ')[1];
@@ -56,16 +55,16 @@ app.use((req, res, next) => {
             next();
         });
     } else {
-        next();
+        return res.sendStatus(401);
     }
-});
+};
 
 // Routes
 app.use('/', homeRoutes);
 app.use('/api/shop', shopRoutes);
 app.use('/api/login', loginRoute);
 app.use('/api/signup', signupRoute);
-app.use('/api/orders', orderRoutes);
+app.use('/api/orders', authenticateJWT, orderRoutes);
 
 app.use(express.static(path.join(__dirname, '..', 'client', 'dist')));
 app.get(/.*/, (req, res) => {
