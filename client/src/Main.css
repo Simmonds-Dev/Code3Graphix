@@ -479,28 +479,23 @@ button:hover {
   width: 50%;
 }
 
-.confirmation-container {
-    max-width: 600px;
-    margin: 2rem auto;
-    padding: 2rem;
-    border-radius: 12px;
-    background: #f9f9f9;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    font-family: sans-serif;
+.confirmation-page {
+  max-width: 600px;
+  margin: auto;
+  padding: 2rem;
+  background: #f9f9f9;
+  border-radius: 8px;
+  color: black;
 }
 
-.confirmation-container h1 {
-    color: #2c7a7b;
+.confirmation-page h2 {
+  margin-bottom: 1rem;
 }
 
-.confirmation-container ul {
-    list-style: none;
-    padding: 0;
+.confirmation-page p {
+  margin: 0.5rem 0;
 }
 
-.confirmation-container li {
-    margin-bottom: 0.5rem;
-}
 
 
 @media (max-width: 768px) {

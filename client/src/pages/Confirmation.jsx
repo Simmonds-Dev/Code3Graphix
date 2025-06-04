@@ -1,57 +1,39 @@
+import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
 
 const Confirmation = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const order = location.state?.order;
+    console.log('Confirmation page order data:', order);
+
 
     useEffect(() => {
         if (!order) {
-            // If accessed directly without order data, redirect to home
             navigate('/');
+        } else {
+            console.log('Navigating to confirmation page with:', order);
         }
     }, [order, navigate]);
 
     if (!order) return null;
 
-    const {
-        id,
-        email,
-        quantity,
-        description,
-        size,
-        color,
-        urgency,
-        message,
-        personalArtwork,
-        user,
-        order_items
-    } = order;
-
-    const product = order_items?.[0]?.product;
+    const item = order.order_items?.[0]; // safely get first item
+    const product = item?.product;
 
     return (
-        <div className="confirmation-container">
-            <h1>🎉 Thank You for Your Order!</h1>
-            <p>We'll review your request and come back to you with a design concept as soon as possible</p>
-
-            <h3>🔖 Order Details:</h3>
-            <ul>
-                <li><strong>Order ID:</strong> #{id}</li>
-                <li><strong>Customer:</strong> {user?.user_name || 'N/A'}</li>
-                <li><strong>Email:</strong> {email}</li>
-                <li><strong>Product:</strong> {product?.product_name}</li>
-                <li><strong>Description:</strong> {description}</li>
-                <li><strong>Quantity:</strong> {quantity}</li>
-                <li><strong>Size:</strong> {size}</li>
-                <li><strong>Color:</strong> {color}</li>
-                <li><strong>Urgency:</strong> {urgency}</li>
-                <li><strong>Personal Artwork:</strong> {personalArtwork ? 'Yes' : 'No'}</li>
-                <li><strong>Message:</strong> {message}</li>
-            </ul>
-
-            <button onClick={() => navigate('/')}>Back to Home</button>
+        <div className="confirmation-page">
+            <h2>Order Confirmation</h2>
+            <p><strong>Customer:</strong> {order.user?.user_name}</p>
+            <p><strong>Email Sent To:</strong> {order.user?.user_email}</p>
+            <p><strong>Product:</strong> {product?.product_name}</p>
+            <p><strong>Description:</strong> {product?.product_description}</p>
+            <p><strong>Quantity:</strong> {item?.quantity}</p>
+            <p><strong>Size:</strong> {item?.size}</p>
+            <p><strong>Color:</strong> {item?.color}</p>
+            <p><strong>Urgency:</strong> {order.urgency}</p>
+            <p><strong>Custom Message:</strong> {order.message}</p>
+            {order.personalArtwork && <p><strong>Includes Personal Artwork</strong></p>}
         </div>
     );
 };

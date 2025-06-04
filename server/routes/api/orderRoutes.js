@@ -115,14 +115,13 @@ router.post('/', withAuth, upload.single('file'), async (req, res) => {
             try {
                 await fs.rename(req.file.path, newFilePath);
                 updatedFilePath = newFilePath;
-
-                await order.update({ filePath: updatedFilePath});
+                await order.update({ filePath: updatedFilePath });
             } catch (renameErr) {
                 console.error('Error renaming file:', renameErr);
             }
         }
 
-        // Step 2: Create OrderItem (join table between order & product)
+        // Step 2: Create OrderItem (join table)
         await OrderItem.create({
             order_id: order.id,
             product_id: parsedProductId,
@@ -132,11 +131,11 @@ router.post('/', withAuth, upload.single('file'), async (req, res) => {
         });
 
         // Step 3: Fetch full order with associations
-        const fullOrder = await Orders.findByPk(order.id, {
+        const orderWithRelations = await Orders.findByPk(order.id, {
             include: [
                 {
                     model: OrderItem,
-                    include: [ Product ]
+                    include: [Product]
                 },
                 {
                     model: User,
@@ -145,18 +144,26 @@ router.post('/', withAuth, upload.single('file'), async (req, res) => {
             ]
         });
 
+        // Step 4: Sanitize response
+        const plainOrder = {
+            ...orderWithRelations.get({ plain: true }),
+            order_items: orderWithRelations.order_items.map(item => ({
+                ...item.get({ plain: true }),
+                product: item.product?.get({ plain: true })
+            })),
+            user: orderWithRelations.user?.get({ plain: true })
+        };
 
-        // Step 4: Send email confirmation
+        // Step 5: Send email confirmation
         try {
-            await sendOrderEmail(fullOrder, updatedFilePath);
+            await sendOrderEmail(orderWithRelations, updatedFilePath);
             console.log('Back End - Email sent!');
         } catch (emailErr) {
-            console.error('Email failed:', emailErr)
+            console.error('Email failed:', emailErr);
         }
 
-        // Final response to frontend
-        console.log(fullOrder);
-        res.status(201).json(fullOrder);
+        // Step 6: Send to frontend
+        res.status(201).json(plainOrder);
 
     } catch (err) {
         console.error('Back End - Order submission error:', err);

@@ -22,7 +22,7 @@ export const sendOrderEmail = async (fullOrder, filePath) => {
     }
 
     const mailOptions = {
-        from: `"Order Bot" <${process.env.EMAIL_USER}>`,
+        from: `"Code3Graphix" <${process.env.EMAIL_USER}>`,
         to: user.user_email,
         subject: `Order Confirmation: ${product?.product_name || 'Product'}`,
         text: `

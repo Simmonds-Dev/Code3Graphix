@@ -66,7 +66,6 @@ const Orders = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Front End - Order submitted:', formData);
 
         const formPayload = new FormData();
         formPayload.append("productId", formData.productId);
@@ -95,11 +94,11 @@ const Orders = () => {
                 throw new Error('Failed to submit order');
             }
 
-            const data = await response.json();
-            console.log('Front End - Order created successfully:', data);
+            const fullOrder = await response.json();
+            console.log('Front End - Order created successfully:', fullOrder);
+            console.log('Navigating to confirmation page with:', JSON.stringify(fullOrder, null, 2));
+            navigate('/confirmation', { state: { order: fullOrder } });
 
-            // Navigate to a confirmation page
-            navigate('/confirmation', { state: { order: formData } });
 
         } catch (error) {
             console.error('Front End - Error submitting order:', error);
@@ -181,9 +180,9 @@ const Orders = () => {
                         <label htmlFor="urgency">
                             Needed By:
                             <select name="urgency" value={formData.urgency} onChange={handleChange} required>
-                                <option value="standard">Standard (7–10 Business Days)</option>
-                                <option value="priority">Priority (3–5 Business Days)</option>
-                                <option value="rush">Rush (1–2 Business Days)</option>
+                                <option value="Standard">Standard (7–10 Business Days)</option>
+                                <option value="Priority">Priority (3–5 Business Days)</option>
+                                <option value="Rush">Rush (1–2 Business Days)</option>
                             </select>
 
                         </label>
